@@ -1,4 +1,5 @@
 const express = require('express');
+require("./config/db.config")
 
 const app = express();
 
@@ -23,10 +24,3 @@ app.use(( req, res) => {
 
 module.exports = app;
 
-const mongoose = require('mongoose');
-
-mongoose.connect('mongodb+srv://user_1:0202@atlascluster.xavjrat.mongodb.net/?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));

@@ -1,8 +1,8 @@
-const express = require('experss');
+const express = require('express');
 const router = express.Router();
-const userCtrl = require('./controllers/user')
+const userCtrl = require('../controllers/user')
 
-route.post('/auth/signup', userCtrl.signup)
-route.post('/auth/login', userCtrl.login)
+router.post('/signup', userCtrl.signup)
+router.post('/login', userCtrl.login)
 
-module.export = router
+module.exports = router

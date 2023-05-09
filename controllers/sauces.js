@@ -12,8 +12,6 @@ exports.createSauce = (req, res, next) => {
       req.file.filename
     }`,
   });
-  console.log(req.auth.userId);
-
   sauce
     .save()
     .then((createdSauce) => {
@@ -41,11 +39,9 @@ exports.modifySauce = (req, res, next) => {
         res.status(401).json({ message: "Not authorized" });
       } else {
         if (req.file) {
-          fs.unlink(`images/${filename}`, () => {
-            Sauce.deleteOne({ _id: req.params.id })
-              .then(() => res.status(200).json({ message: "Objet modifié!" }))
-              .catch((error) => res.status(401).json({ error }));
-          });
+          console.log(req.file);
+          const filename = sauce.imageUrl.split("/images/")[1];
+          fs.unlinkSync(`images/${filename}`);
         }
         Sauce.updateOne(
           { _id: req.params.id },
@@ -66,7 +62,7 @@ exports.deleteSauce = (req, res, next) => {
       if (sauce.userId != req.auth.userId) {
         res.status(401).json({ message: "Non-aurotrisé" });
       } else {
-        const filename = sauce.imageUrl.split("/image/")[1];
+        const filename = sauce.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
           Sauce.deleteOne({ _id: req.params.id })
             .then(() => {

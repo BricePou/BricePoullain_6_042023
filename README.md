@@ -5,10 +5,10 @@ Requirement:
     node version : v18.15.0
 
 Installation:
-    projet envoyé par zip
-    ou recupérable sur git hub
-        :https://github.com/BricePou/BricePoullain_6_042023
+   1-Clone du repository : https://github.com/BricePou/BricePoullain_6_042023
+   2-npm install
+
 
 Run: 
-    nodemon server
+    1-nodemon server
     

@@ -3,8 +3,8 @@ const Sauce = require("../models/sauces");
 exports.likeSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      const alreadyLiked = sauce.usersLiked.includes(req.body.userId);
-      const alreadyDisliked = sauce.usersDisliked.includes(req.body.userId);
+      const alreadyLiked = sauce.usersLiked.includes(req.auth.userId);
+      const alreadyDisliked = sauce.usersDisliked.includes(req.auth.userId);
 
       switch (req.body.like) {
         case 1:
@@ -13,13 +13,13 @@ exports.likeSauce = (req, res, next) => {
           } else {
             const update = {
               $inc: { likes: 1 },
-              $push: { usersLiked: req.body.userId },
+              $push: { usersLiked: req.auth.userId },
             };
             if (alreadyDisliked) {
               update = {
                 $inc: { likes: 1, dislikes: -1 },
-                $push: { usersLiked: req.body.userId },
-                $pull: { usersDisliked: req.body.userId },
+                $push: { usersLiked: req.auth.userId },
+                $pull: { usersDisliked: req.auth.userId },
               };
             }
             Sauce.updateOne({ _id: req.params.id }, update)
@@ -33,13 +33,13 @@ exports.likeSauce = (req, res, next) => {
           } else {
             const update = {
               $inc: { dislikes: 1 },
-              $push: { usersDisliked: req.body.userId },
+              $push: { usersDisliked: req.auth.userId },
             };
             if (alreadyLiked) {
               update = {
                 $inc: { dislikes: 1, likes: -1 },
-                $push: { usersDisliked: req.body.userId },
-                $pull: { usersLiked: req.body.userId },
+                $push: { usersDisliked: req.auth.userId },
+                $pull: { usersLiked: req.auth.userId },
               };
             }
             Sauce.updateOne({ _id: req.params.id }, update)
@@ -55,13 +55,13 @@ exports.likeSauce = (req, res, next) => {
           if (alreadyLiked) {
             update = {
               $inc: { likes: -1 },
-              $pull: { usersLiked: req.body.userId },
+              $pull: { usersLiked: req.auth.userId },
             };
           }
           if (alreadyDisliked) {
             update = {
               $inc: { dislikes: -1 },
-              $pull: { usersDisliked: req.body.userId },
+              $pull: { usersDisliked: req.auth.userId },
             };
           }
           Sauce.updateOne({ _id: req.params.id }, update)
